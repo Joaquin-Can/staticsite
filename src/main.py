@@ -1,6 +1,9 @@
 import os
 import shutil
 from gencontent import *
+import sys
+
+
 def copy_static(src, dst):
     if not os.path.exists(src):
         raise FileNotFoundError(src)
@@ -24,7 +27,11 @@ def main():
     if os.path.exists("public"):
         shutil.rmtree('public')
     shutil.copytree("static", "public", dirs_exist_ok=True)
-    generate_pages_recursive("content", "template.html", "public")
+    if len(sys.argv) > 1:
+        basepath = sys.argv[1]
+    else: basepath = "/"
+    generate_pages_recursive("content", "template.html", "docs", basepath)
+
 
 
 if __name__ == "__main__":
